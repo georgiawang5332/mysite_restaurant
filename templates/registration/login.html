@@ -1,0 +1,85 @@
+{% extends "base_generic.html" %}
+
+{% block body %}
+  {% load static %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Login</h1>
+          </div><!-- /.col -->
+          {% if user.is_authenticated %}
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Login</a></li>
+                <li class="breadcrumb-item active">Login Page</li>
+              </ol>
+            </div><!-- /.col -->
+          {% endif %}
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+
+          <div class="col-lg-12">
+            <div class="card-header m-0 p-0"></div>
+            <div class="card-body">
+              <p>welcome! You can login here!!</p>
+
+              {% if form.errors %}
+                <p>Your username and password didn't match. Please try again.</p>
+              {% endif %}
+
+              {% if next %}
+                {% if user.is_authenticated %}
+                  <p>Your account doesn't have access to this page. To proceed,
+                    please login with an account that has access.</p>
+                {% else %}
+                  <p>Please login to see this page.</p>
+                {% endif %}
+              {% endif %}
+
+              <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <table>
+                  <tr>
+                    <td>{{ form.username.label_tag }}</td>
+                    <td>{{ form.username }}</td>
+                  </tr>
+                  <tr>
+                    <td>{{ form.password.label_tag }}</td>
+                    <td>{{ form.password }}</td>
+                  </tr>
+                </table>
+
+                <input type="submit" value="login"/>
+                <input type="hidden" name="next" value="{{ next }}"/>
+              </form>
+
+              {# Assumes you setup the password_reset view in your URLconf #}
+              <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+
+
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+
+{% endblock %}

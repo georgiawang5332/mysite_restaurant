@@ -1,0 +1,66 @@
+{% extends 'base_generic.html' %}
+
+{% block body %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    {% if user.is_authenticated %}<!-- Content Header (Page header) -->
+      <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0">List Page</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">List</a></li>
+                <li class="breadcrumb-item active">List Page</li>
+              </ol>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
+
+      <!-- Main content -->
+      <div class="content">
+        {#      <div class="container-fluid">#}
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body">
+
+                <h5 class="card-title">user account : {{ user|capfirst }}</h5><br>
+                <p>Account: {{ user }}</p>
+                <p>Title Name: {{ title }}</p>
+                <p>Username: {{ user.username }}</p>
+                <p>First Name: {{ user.first_name }}</p>
+                <p>Last Name: {{ user.last_name }}</p>
+                <p>Email: {{ user.email }}</p>
+                <p>Password: {{ user.password }}</p>
+
+                <p>Store：{{ user.userprofile }}</p>
+                <p>Image：{{ user.userprofile.image }}</p>
+                <p>
+                  img: <img src="{{ user.userprofile.image.url }}" width="200" height="200" alt="leo頭像">
+                </p>
+                <p>Store city：{{ user.userprofile.city }}</p>
+                <p>store website：{{ user.userprofile.website }}</p>
+
+              </div>
+            </div>
+          </div>
+          <!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content -->
+    {% else %}
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper pt-5">
+        <h4>尚未登入，如未註冊、登入可於「右上角」申請註冊。</h4>
+      </div>
+      <!-- /.content-wrapper -->
+    {% endif %}
+  </div>
+  <!-- /.content-wrapper -->
+
+{% endblock %}

@@ -1,0 +1,24 @@
+* {
+  /*outline: 1px solid red;*/
+  text-decoration: none;
+  /*background-color: #0c84ff;*/
+}
+
+html, body, ul, li, a {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-decoration: none;
+  /*outline: red solid 1px;*/
+}
+
+/*sidebar 已上線*/
+.info>a {
+    text-decoration: none;
+    padding-right: 5px;
+    margin-top: 3px;
+    font-size: 11px;
+}
+/*sidebar 已上線 end*/
+
