@@ -1,18 +1,17 @@
-from django.shortcuts import render, redirect
-# from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import CreateView
 
-# from django.contrib.auth import login, authenticate
-from polls.forms import RegistrationForm, EditForm
+from polls.forms import *
+from django.contrib import messages
+from django.http import Http404, HttpResponseRedirect
+
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
-
-# from django.http import response  # 註冊方法 可刪除
-# from polls.forms import RegistrationForm
-# from polls.models import *
-# from django.contrib.auth.models import User
-
-# Create your views here.
 from django.contrib.auth.decorators import login_required
 
+from django.http import HttpResponse
+
+
+# Create your views here.
 
 @login_required
 def changePassword(request):
@@ -44,51 +43,83 @@ def polls_profile_edit(request):
     return render(request, 'polls/polls_edit.html', context)
 
 
-def polls_delete(request):
-  context = {
-    'title': 'test index',
+# class polls_create(request):
+def polls_create(request):
+  template_name = 'polls/polls_form.html'
+  if not request.user.is_staff or not request.user.is_superuser:
+    raise Http404
 
-  }
-  return render(request, 'polls/polls_delete.html', context)
+  form = StoreForm(request.POST or None, request.FILES or None)
+  if form.is_valid():
+    instance = form.save(commit=False)
+    print(form.cleaned_data)
+    # Store.objects.create(**form.cleaned_data)  # 新增
+    instance.save()
 
-
-def polls_edit(request):
-  if request.method == "POST":
-    form = EditForm(request.POST, instance=request.user)
-    if form.is_valid():
-      form.save()
-      return redirect('polls:polls_detail')
+    messages.success(request, "Successfully Created")
+    # message success
+    return HttpResponseRedirect(instance.get_absolute_url())
   else:
-    form = EditForm(instance=request.user)
-    context = {
-      'title': 'test index',
-      'form': form,
-    }
-    return render(request, 'polls/polls_edit.html', context)
-
-
-def polls_detail(request):
+    messages.error(request, "Not successfully Created")
   context = {
-    'title': 'test index',
+    'form': form,
+  }
+  return render(request, template_name, context)
 
+
+def polls_detail(request, id):
+  instance = get_object_or_404(Store, id=id)
+  # try:
+  #   instance = get_object_or_404(Store, id=id)
+  # except Store.DoesNotExist:
+  #   raise Http404("Given query not found....Store does not exist")
+
+  context = {
+    'instance': instance,
+    'title': 'Detail',
   }
   return render(request, 'polls/polls_detail.html', context)
 
 
-def polls_create(request, ):
+def polls_list(request): #, id
+  # instance = get_object_or_404(Store, id=id)
+  queryset = Store.objects.all().order_by('-id')
   context = {
-    'title': 'test index',
-
-  }
-  return render(request, 'polls/polls_create.html', context)
-
-
-def polls_list(request):
-  context = {
-    'title': 'test index',
-    'user': request.user,
+    'queryset_list': queryset,
+    'title': 'List',
   }
   return render(request, 'polls/polls_list.html', context)
+  # return HttpResponse('<h1>List</h1>')
+
+
+def polls_edit(request, id=None):
+  # basic use permissions 基本使用權限
+  if not request.user.is_staff or not request.user.is_superuser:
+    raise Http404
+
+  instance = get_object_or_404(Store, id=id)
+  form = StoreForm(request.POST or None, request.FILES or None, instance=instance)
+
+  if form.is_valid():
+    instance = form.save(commit=False)
+    instance.save()
+    # message success
+    return HttpResponseRedirect(instance.get_absolute_url())
+
+  context = {
+    'title': 'edit',
+    'instance': instance,
+    'form': form,
+  }
+  return render(request, 'polls/polls_form.html', context)
+
+
+def polls_delete(request):
+  # context = {
+  #   'title': 'test index',
+  # }
+  # return render(request, 'polls/polls_delete.html', context)
+  return HttpResponse('<h1>Delete</h1>')
 
 
 def polls_profile(request):
@@ -97,7 +128,7 @@ def polls_profile(request):
   }
   return render(request, 'polls/profile.html', context)
 
-  # ////////////////////////////////////
+  # ////////////////////////////////////\
 
 
 def contact(request):
@@ -156,9 +187,11 @@ def register(request):
   #     context['registration_form'] = form
   #   return render(request, 'registration/reg_form.html', context)
 
+
 @login_required
 def starter(request):
+  templates_name = 'polls/starter.html'
   context = {
     'title': 'test index',
   }
-  return render(request, 'polls/starter.html', context)
+  return render(request, templates_name, context)

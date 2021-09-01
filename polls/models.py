@@ -1,10 +1,9 @@
 from django.db import models
-from django.db.models.signals import post_save, pre_save
-# Create your models here.
-from django.dispatch import receiver
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
+# Create your models here.
 class UserProfileManager(models.Manager):
   def get_queryset(self):
     return super(UserProfileManager, self).get_queryset().filter(city='London')
@@ -12,7 +11,7 @@ class UserProfileManager(models.Manager):
 
 # ˇ如何在配置文件頁面上的模板中顯示用戶配置文件模型信息（Django 教程） | 第 35 部分 ***它的信號根本沒有用
 class UserProfile(models.Model):
-  user = models.OneToOneField(User, on_delete=models.CASCADE, default='')
+  user = models.OneToOneField(User, on_delete=models.CASCADE, default='', primary_key=True, )
   description = models.CharField(max_length=100, default='')
   city = models.CharField(max_length=100, default='')
   website = models.URLField(default='')
@@ -39,13 +38,16 @@ class Store(models.Model):  # 商店
   def __str__(self):
     return self.store_name
 
-
-def create_store_profile(sender, **kwargs):
-  if kwargs['created']:
-    store_profile = Store.objects.create(user=kwargs['instance'])
+  def get_absolute_url(self):
+    return reverse('polls:polls_detail', kwargs={'id': self.id})
 
 
-post_save.connect(create_store_profile, sender=Store)
+# def create_store_profile(sender, **kwargs):
+#   if kwargs['created']:
+#     store_profile = Store.objects.create(user=kwargs['instance'])
+#
+#
+# post_save.connect(create_store_profile, sender=Store)
 
 SIZE_CHOICES = [
   ('BG', 'Big'),

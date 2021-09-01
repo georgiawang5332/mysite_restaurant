@@ -3,23 +3,33 @@ from .models import *
 
 
 # Register your models here.
-# admin.site.register(UserProfile)  # 店家(餐廳)
+admin.site.register(UserProfile)  # 店家(餐廳)
 
 
-class UserProfileAdmin(admin.ModelAdmin):
-  list_display = ('user', 'user_info', 'city', 'phone', 'website', 'image')
+# class UserProfileAdmin(admin.ModelAdmin):
+#   list_display = ('user', 'description', 'city', 'website', 'phone', 'image')
+#   list_filter = ('phone',)
+#   search_fields = ('phone',)
+#   fields = ('user', 'description', 'city', 'website',
+#             'phone', )  # 這將會使得price欄位出現在restaurant欄位之前，而且name、is_spicy和comment欄位都不會出現，不能被編輯。
+#   ordering = ('-city',)
+  # list_display = ('user', 'description', 'city', 'phone', 'website', 'image')
+  # list_display_link = ('description', 'city', 'phone', 'website', 'image')
+  # search_fields = ('city',)
 
-  def user_info(self, obj):
-    return obj.description
-  user_info.short_description = '高端資訊'
+  # def user_info(self, obj):
+  #   return obj.description
+  # user_info.short_description = '高端資訊'
 
-  def get_queryset(self, request):
-    queryset = super(UserProfileAdmin, self).get_queryset(request)
-    queryset = queryset.order_by('-phone', 'user')
-    return queryset
+  # def get_queryset(self, request):
+  #   queryset = super(UserProfileAdmin, self).get_queryset(request)
+  #   queryset = queryset.order_by('-phone')
+  #   return queryset
 
+  # class Meta:
+  #   modle = UserProfile
 
-admin.site.register(UserProfile, UserProfileAdmin)
+# admin.site.register(UserProfile, UserProfileAdmin)
 
 
 # admin.site.site_header = 'Adminnnnnn'  # 店家(餐廳)admin.site.site_header = 'My admin'
@@ -44,7 +54,7 @@ admin.site.register(MenuItem, MenuItemAdmin)  # 菜單
 
 
 class StoreAdmin(admin.ModelAdmin):
-  list_display = ('store_name', 'store_holder', 'store_phoneNumber', 'store_address', 'store_email', 'store_notes')
+  list_display = ('id', 'store_name', 'store_holder', 'store_phoneNumber', 'store_address', 'store_email', 'store_notes')
   inlines = (MenuItemInline,)
   list_filter = ('store_name',)
   search_fields = ('store_name',)

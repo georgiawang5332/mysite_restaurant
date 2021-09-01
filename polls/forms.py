@@ -7,6 +7,28 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 
 # from polls.models import *
+class StoreForm(forms.ModelForm):
+  class Meta:
+    model = Store
+    fields = '__all__'
+
+
+class CreateForm(forms.Form):
+  description = forms.CharField(max_length=100)
+  city = forms.CharField(max_length=100)
+  website = forms.URLField()
+  phone = forms.IntegerField()
+
+  class Meta:
+    model = UserProfile
+    fields = [
+      'description',
+      'city',
+      'website',
+      'phone',
+    ]
+
+
 class EditForm(UserChangeForm):
   class Meta:
     model = User

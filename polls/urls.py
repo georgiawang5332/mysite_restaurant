@@ -2,9 +2,6 @@ from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_view
 
-# Create your urls here.
-app_name = 'polls'
-
 urlpatterns = [
   # path('home/', views.home, name='home'),  添加額外 請觀看42 新頁面
   # path('login/', views.login, name='login'),
@@ -14,12 +11,15 @@ urlpatterns = [
   path('edit/', views.polls_profile_edit, name='polls_profile_edit'),  # http://127.0.0.1:8000/posts/3/edit/
   path('changePassword/', views.changePassword, name='changePassword'),  # http://127.0.0.1:8000/posts/3/edit/
 
-
-  path('list/', views.polls_list, name='polls_list'),  # http://127.0.0.1:8000/posts/list
+  # CURD
+  path('<int:id>/detail/', views.polls_detail, name='polls_detail'),  # http://127.0.0.1:8000/posts/9/
   path('create/', views.polls_create, name='polls_create'),  # http://127.0.0.1:8000/posts/create
-  # path('<int:id>/detail', views.polls_detail, name='polls_detail'),  # http://127.0.0.1:8000/posts/9/
-  # path('<int:id>/edit/', views.polls_edit, name='polls_edit'),  # http://127.0.0.1:8000/posts/3/edit/
+  path('list/', views.polls_list, name='polls_list'),  # http://127.0.0.1:8000/posts/list
+  path('<int:id>/edit/', views.polls_edit, name='polls_edit'),  # http://127.0.0.1:8000/posts/3/edit/
   # path('<int:id>/delete/', views.polls_delete, name='polls_delete'),  # http://127.0.0.1:8000/posts/delete
+  path('delete/', views.polls_delete, name='polls_delete'),  # http://127.0.0.1:8000/posts/delete
+
+  # 其他畫面
   path('contact/', views.contact, name='contact'),
   # path('', views.login_redirect, name='login_redirect'),
   # path('register/', views.registration_view, name='register'),
@@ -56,14 +56,6 @@ urlpatterns = [
   # 密碼寄件
   # path('reset_password_sent/', auth_view.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ]
-
-
-
-
-
-
-
-
-
-
+# Create your urls here.
+app_name = 'polls'
 
