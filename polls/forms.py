@@ -1,6 +1,4 @@
 from django import forms
-# 註冊 method : csirpy_form
-from django.contrib.auth import login, authenticate
 from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm

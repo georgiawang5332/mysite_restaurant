@@ -56,8 +56,8 @@ def polls_create(request):
     # Store.objects.create(**form.cleaned_data)  # 新增
     instance.save()
 
-    messages.success(request, "Successfully Created")
     # message success
+    messages.success(request, "Successfully Created")
     return HttpResponseRedirect(instance.get_absolute_url())
   else:
     messages.error(request, "Not successfully Created")
@@ -104,8 +104,10 @@ def polls_edit(request, id=None):
     instance = form.save(commit=False)
     instance.save()
     # message success
+    messages.success(request, "Successfully Save")
     return HttpResponseRedirect(instance.get_absolute_url())
-
+  else:
+    messages.error(request, "Not successfully Created")
   context = {
     'title': 'edit',
     'instance': instance,
@@ -114,12 +116,12 @@ def polls_edit(request, id=None):
   return render(request, 'polls/polls_form.html', context)
 
 
-def polls_delete(request):
-  # context = {
-  #   'title': 'test index',
-  # }
-  # return render(request, 'polls/polls_delete.html', context)
-  return HttpResponse('<h1>Delete</h1>')
+def polls_delete(request, id=None):
+  instance = get_object_or_404(Store, id=id)
+  instance.delete()
+  messages.success(request, "Successfully delete")
+  return redirect('polls:polls_list')
+
 
 
 def polls_profile(request):
@@ -128,7 +130,7 @@ def polls_profile(request):
   }
   return render(request, 'polls/profile.html', context)
 
-  # ////////////////////////////////////\
+  # ////////////////////////////////
 
 
 def contact(request):

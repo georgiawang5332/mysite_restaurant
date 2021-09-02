@@ -48,12 +48,15 @@
                   <div>
                     {% for obj in queryset_list %}
                       NO. {{ obj.id }} <br>
-{#                      store_name:<a href="{% url 'polls:polls_detail' id=obj.id %}"> {{ obj.store_name }}</a><br>#}
+                      {#                      store_name:<a href="{% url 'polls:polls_detail' id=obj.id %}"> {{ obj.store_name }}</a><br>#}
                       store_name:<a href="{{ obj.get_absolute_url }}"> {{ obj.store_name }}</a><br>
                       store_holder: {{ obj.store_holder }} <br>
                       store_phoneNumber: {{ obj.store_phoneNumber }} <br>
                       store_address: {{ obj.store_address }} <br>
                       store_email: {{ obj.store_email }} <br>
+                      <a href="{% url 'polls:polls_edit' id=obj.id %}">修改</a>
+                      <a href="{% url 'polls:polls_delete' id=obj.id %}">刪除</a>
+
                       <br>
                     {% endfor %}
                   </div>
