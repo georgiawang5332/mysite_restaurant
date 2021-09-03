@@ -1,7 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block body %}
-  <title>{{ title }} Page</title>
+  <title>{% block head_title %}{{ title }} Page{% endblock head_title %}</title>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     {% if user.is_authenticated %}

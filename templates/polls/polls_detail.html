@@ -1,7 +1,15 @@
 {% extends "base_generic.html" %}
 
+{#{% block style %}#}
+{#  <style>#}
+{#    h1.m-0{#}
+{#      color: fuchsia;#}
+{#    }#}
+{#  </style>#}
+{#{% endblock style %}#}
+
 {% block body %}
-  <title>{{ title }} Page</title>
+  <title>{% block head_title %}{{ instance.id }} {{ title }} | {{ block.super }} Page{% endblock head_title %}</title>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -11,7 +19,7 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0">{{ title }} Page</h1>
+              <h1 class="m-0">{{ title }} Page123</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
@@ -38,15 +46,15 @@
                   商店電話: {{ instance.store_phoneNumber }}<br>
                   商店地址: {{ instance.store_address }}<br>
                   商店信箱: {{ instance.store_email }}<br>
-{#                  <h5 class="card-title">user account : {{ user|capfirst }}</h5><br>#}
-{#                  <p>Account: {{ user }}</p>#}
-{#                  <p>Title Name: {{ title }}</p>#}
-{#                  <p>Password: {{ user.password }}</p>#}
-{##}
-{#                  <p>Username: {{ user.username }}</p>#}
-{#                  <p>First Name: {{ user.first_name }}</p>#}
-{#                  <p>Last Name: {{ user.last_name }}</p>#}
-{#                  <p>Email: {{ user.email }}</p>#}
+                  {#                  <h5 class="card-title">user account : {{ user|capfirst }}</h5><br>#}
+                  {#                  <p>Account: {{ user }}</p>#}
+                  {#                  <p>Title Name: {{ title }}</p>#}
+                  {#                  <p>Password: {{ user.password }}</p>#}
+                  {##}
+                  {#                  <p>Username: {{ user.username }}</p>#}
+                  {#                  <p>First Name: {{ user.first_name }}</p>#}
+                  {#                  <p>Last Name: {{ user.last_name }}</p>#}
+                  {#                  <p>Email: {{ user.email }}</p>#}
 
                 </div>
               </div>

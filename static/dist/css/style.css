@@ -4,6 +4,10 @@
   /*background-color: #0c84ff;*/
 }
 
+h1.m-0{
+  color: fuchsia;
+}
+
 html, body, ul, li, a {
   box-sizing: border-box;
   margin: 0;

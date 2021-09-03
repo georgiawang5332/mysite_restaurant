@@ -1,5 +1,5 @@
 {% extends 'base_generic.html' %}
-
+{% load static %}
 {% block body %}
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -42,6 +42,8 @@
                 <p>Image：{{ user.userprofile.image }}</p>
                 <p>
                   img: <img src="{{ user.userprofile.image.url }}" width="200" height="200" alt="leo頭像">
+                  <img src="{% static 'dist/img/icons.png' %}" alt="">
+
                 </p>
                 <p>Store city：{{ user.userprofile.city }}</p>
                 <p>store website：{{ user.userprofile.website }}</p>
