@@ -41,7 +41,9 @@
                 <p>Store：{{ user.userprofile }}</p>
                 <p>Image：{{ user.userprofile.image }}</p>
                 <p>
-                  img: <img src="{{ user.userprofile.image.url }}" width="200" height="200" alt="leo頭像">
+                  {% if obj.image %}
+                    img: <img src="{{ user.userprofile.image.url }}" width="200" height="200" alt="leo頭像">
+                  {% endif %}
                   <img src="{% static 'dist/img/icons.png' %}" alt="">
 
                 </p>

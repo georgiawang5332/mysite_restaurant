@@ -1,0 +1,104 @@
+{% extends "base_generic.html" %}
+
+{% block body %}
+  <title>{% block head_title %}{{ title }} Page{% endblock head_title %}</title>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    {% if user.is_authenticated %}
+      <!-- Content Header (Page header) -->
+      <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1 class="m-0">{{ title }} Page</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">{{ title }}</a></li>
+                <li class="breadcrumb-item active">{{ title }} Page</li>
+              </ol>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content-header -->
+
+      <!-- Main content -->
+      <div class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-6">
+
+              <div class="card card-primary card-outline">
+                <div class="card-body">
+                  <h5 class="card-title">{{ title }}</h5>
+                  <p class="card-text">
+                  <div>
+
+                  {% for obj in queryset_list %}
+                    <div class="card card-primary card-outline col-sm-3 pr-2">
+                      <div class="card-body">
+                        <h5 class="card-title"><a href="{{ obj.get_absolute_url }}"> {{ obj.store_name }}</a></h5>
+                        <p class="card-text">store note: {{ obj.store_notes|linebreaks|truncatechars:30 }}</p>
+                        <p>
+                          <a href="#" class="btn btn-primary" role="button">修改</a>
+                          <a href="#" class="btn btn-primary" role="button">刪除</a>
+                        </p>
+                      </div>
+                    </div>
+                  {% endfor %}
+
+
+{#                    {% for obj in queryset_list %}#}
+{#                      NO. {{ obj.id }} <br>#}
+                      {# store_name:<a href="{% url 'polls:polls_detail' id=obj.id %}"> {{ obj.store_name }}</a><br>#}
+{#                      store_name:<a href="{{ obj.get_absolute_url }}"> {{ obj.store_name }}</a><br>#}
+{#                      store_holder: {{ obj.store_holder }} <br>#}
+{#                      store_phoneNumber: {{ obj.store_phoneNumber }} <br>#}
+{#                      store_address: {{ obj.store_address }} <br>#}
+{#                      store_email: {{ obj.store_email }} <br>#}
+{#                      <a href="{% url 'polls:polls_edit' id=obj.id %}">修改</a>#}
+{#                      <a href="{% url 'polls:polls_delete' id=obj.id %}">刪除</a>#}
+{##}
+{#                      <br>#}
+{#                    {% endfor %}#}
+                  </div>
+
+                  {% if queryset_list %}
+                    <ul>
+                      {% for store in queryset_list %}
+                        <li>
+                          <a href="{{ store.get_absolute_url }}">
+                            {{ store }} ({{ store.store_holder }} -
+                            {% if store.store_holder %}{{ store.store_phoneNumber }}{% endif %})
+                          </a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% else %}
+                    <p>There are no List available.</p>
+                  {% endif %}
+                  </p>
+                  <a href="#" class="card-link">Card link</a>
+                  <a href="#" class="card-link">Another link</a>
+                </div>
+              </div><!-- /.card -->
+            </div>
+            <!-- /.col-md-6 -->
+
+          </div>
+          <!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.content -->
+    {% else %}
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper pt-5">
+        <h4>尚未登入，如未註冊、登入可於「右上角」申請註冊。</h4>
+      </div>
+      <!-- /.content-wrapper -->
+    {% endif %}
+  </div>
+  <!-- /.content-wrapper -->
+
+{% endblock %}

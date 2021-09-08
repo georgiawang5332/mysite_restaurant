@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import CreateView
+# from django.views.generic import CreateView
 
 from polls.forms import *
 from django.contrib import messages
@@ -8,7 +8,8 @@ from django.http import Http404, HttpResponseRedirect
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 
-from django.http import HttpResponse
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models import Q
 
 
 # Create your views here.
@@ -46,8 +47,10 @@ def polls_profile_edit(request):
 # class polls_create(request):
 def polls_create(request):
   template_name = 'polls/polls_form.html'
-  if not request.user.is_staff or not request.user.is_superuser:
+  if not request.user.is_staff or not request.user.is_superuser:  # 基本用戶權限
     raise Http404
+  # if not request.user.is_authenticated():
+  #   raise Http404
 
   form = StoreForm(request.POST or None, request.FILES or None)
   if form.is_valid():
@@ -81,10 +84,43 @@ def polls_detail(request, id):
   return render(request, 'polls/polls_detail.html', context)
 
 
-def polls_list(request): #, id
+def polls_list(request):  # , id
   # instance = get_object_or_404(Store, id=id)
-  queryset = Store.objects.all().order_by('-id')
+  queryset_list = Store.objects.all()# .order_by('-id')
+  # queryset_list = Store.objects.active()  # .order_by('-id')
+  if request.user.is_staff or request.user.is_superuser:
+    queryset_list = Store.objects.all()  # .order_by('-id')
+
+  # search
+  query = request.GET.get("q")
+  if query:
+    queryset_list = queryset_list.filter(
+      Q(store_name__icontains=query) |
+      Q(store_holder__icontains=query) |
+      Q(store_phoneNumber__icontains=query) |
+      Q(store_address__icontains=query) |
+      Q(store_email__icontains=query) |
+      Q(store_notes__icontains=query)
+    ).distinct()
+
+  # paginator
+  paginator = Paginator(queryset_list, 25)  # Show 25 contacts per page.
+  page_request_var = 'page'
+  page_number = request.GET.get(page_request_var)
+
+  try:
+    queryset = paginator.page(page_number)
+  except PageNotAnInteger:
+    # if page is not an integer, deliver first page.
+    queryset = paginator.page(1)
+  except EmptyPage:
+    queryset = paginator.page(paginator.num_pages)
+
+  page_obj = paginator.get_page(page_number)
+
   context = {
+    'page_request_var': page_request_var,
+    'page_obj': page_obj,
     'queryset_list': queryset,
     'title': 'List',
   }
@@ -104,7 +140,7 @@ def polls_edit(request, id=None):
     instance = form.save(commit=False)
     instance.save()
     # message success
-    messages.success(request, "Successfully Save")
+    messages.success(request, "Successfully Save <a href='#'>ITEM </a> Saved", extra_tags='html_safe')
     return HttpResponseRedirect(instance.get_absolute_url())
   else:
     messages.error(request, "Not successfully Created")
@@ -121,7 +157,6 @@ def polls_delete(request, id=None):
   instance.delete()
   messages.success(request, "Successfully delete")
   return redirect('polls:polls_list')
-
 
 
 def polls_profile(request):

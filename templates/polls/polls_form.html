@@ -32,7 +32,7 @@
                 <div class="card-body">
 
                   <h1>Test</h1>
-                  <form method="post" action="{% url 'polls:polls_create' %}">
+                  <form method="post" enctype="multipart/form-data" action="{% url 'polls:polls_create' %}">
                     {% csrf_token %}
                     {{ form.as_p }}
                     <input type="submit" value="save">

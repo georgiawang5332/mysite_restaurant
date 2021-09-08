@@ -9,7 +9,7 @@ class UserProfileManager(models.Manager):
     return super(UserProfileManager, self).get_queryset().filter(city='London')
 
 
-# ˇ如何在配置文件頁面上的模板中顯示用戶配置文件模型信息（Django 教程） | 第 35 部分 ***它的信號根本沒有用
+# 如何在配置文件頁面上的模板中顯示用戶配置文件模型信息（Django 教程） | 第 35 部分 ***它的信號根本沒有用
 class UserProfile(models.Model):
   user = models.OneToOneField(User, on_delete=models.CASCADE, default='', primary_key=True, )
   description = models.CharField(max_length=100, default='')
@@ -41,6 +41,8 @@ class Store(models.Model):  # 商店
   def get_absolute_url(self):
     return reverse('polls:polls_detail', kwargs={'id': self.id})
 
+  class Meta:
+    ordering = ['-id']
 
 # def create_store_profile(sender, **kwargs):
 #   if kwargs['created']:

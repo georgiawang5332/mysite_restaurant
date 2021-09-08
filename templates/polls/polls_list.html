@@ -26,82 +26,55 @@
       <!-- Main content -->
       <div class="content">
         <div class="container-fluid">
+
+          {# search polls #}
+          <form method="GET" action="">
+            <label for=""><input type="text" name="q" placeholder="Search posts" value="{{ request.GET.q }}"/></label>
+            <input type="submit" value="Search"/>
+          </form>
+
+          <br>
+
           <div class="row">
-            <div class="col-lg-6">
-              <div class="card">
-                <div class="card-body">
+            <div class="col-lg col-sm-12">
 
-                  <h5 class="card-title">user account : {{ user|capfirst }}</h5><br>
-                  <p>Account: {{ user }}</p>
-                  <p>Title Name: {{ title }}</p>
-                  <p>Password: {{ user.password }}</p>
-
-
-                </div>
-              </div>
-
-              <div class="card card-primary card-outline">
-                <div class="card-body">
-                  <h5 class="card-title">test title</h5>
-                  <p class="card-text">
-                    {{ queryset_list }} <br>
-                  <div>
-                    {% for obj in queryset_list %}
-                      NO. {{ obj.id }} <br>
-                      {#                      store_name:<a href="{% url 'polls:polls_detail' id=obj.id %}"> {{ obj.store_name }}</a><br>#}
-                      store_name:<a href="{{ obj.get_absolute_url }}"> {{ obj.store_name }}</a><br>
-                      store_holder: {{ obj.store_holder }} <br>
-                      store_phoneNumber: {{ obj.store_phoneNumber }} <br>
-                      store_address: {{ obj.store_address }} <br>
-                      store_email: {{ obj.store_email }} <br>
-                      <a href="{% url 'polls:polls_edit' id=obj.id %}">修改</a>
-                      <a href="{% url 'polls:polls_delete' id=obj.id %}">刪除</a>
-
-                      <br>
-                    {% endfor %}
+              {% for obj in queryset_list %}
+                <div class="card card-primary card-outline col-sm-3 mr-3 float-left">
+                  <div class="card-body">
+                    <h5 class="card-title"><a href="{{ obj.get_absolute_url }}"> {{ obj.store_name }}</a></h5>
+                    <div class="card-text">持有人: {{ obj.store_holder|truncatechars:10 }}</div>
+                    <p class="card-text">店面紀錄: {{ obj.store_notes|linebreaks|truncatechars:10 }}</p>
+                    <p class="text-center">
+                      <a href="{% url 'polls:polls_edit' id=obj.id %}" class="btn btn-primary" role="button">修改</a>
+                      <a href="{% url 'polls:polls_delete' id=obj.id %}" class="btn btn-primary text-center"
+                         role="button">刪除</a>
+                    </p>
                   </div>
-                  <br>
+                </div>
+              {% endfor %}
+            </div><!-- /.col-lg .col-sm-12 -->
 
-                  {% if queryset_list %}
-                    <ul>
-                      {% for store in queryset_list %}
-                        <li>
-                          <a href="{{ store.get_absolute_url }}">
-                            {{ store }} ({{ store.store_holder }} -
-                            {% if store.store_holder %}{{ store.store_phoneNumber }}{% endif %})
-                          </a>
-                        </li>
-                      {% endfor %}
-                    </ul>
-                  {% else %}
-                    <p>There are no List available.</p>
-                  {% endif %}
-                  </p>
-                  <a href="#" class="card-link">Card link</a>
-                  <a href="#" class="card-link">Another link</a>
-                </div>
-              </div><!-- /.card -->
-            </div>
-            <!-- /.col-md-6 -->
-            <div class="col-lg-6">
-              <div class="card">
-                <div class="card-header">
-                  <h5 class="m-0">test </h5>
-                </div>
-                <div class="card-body">
-                  <h6 class="card-title">Special title treatment</h6>
+          </div><!-- /.row -->
+          <div class="pagination">
+            <span class="step-links">
+              {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?{{ page_request_var }}={{ page_obj.previous_page_number }}&q={{ request.GET.q }}">previous</a>
+              {% endif %}
+              <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+              </span>
 
-                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-              </div>
-            </div>
-            <!-- /.col-md-6 -->
-          </div>
-          <!-- /.row -->
+              {% if page_obj.has_next %}
+                <a href="?{{ page_request_var }}={{ page_obj.next_page_number }}&q={{ request.GET.q }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+              {% endif %}
+            </span>
+          </div><!-- /. pagination-->
+
         </div><!-- /.container-fluid -->
-      </div>
-      <!-- /.content -->
+      </div><!-- /.content -->
+
     {% else %}
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper pt-5">

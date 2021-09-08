@@ -21,6 +21,8 @@
 
 <body class="hold-transition sidebar-mini">
 
+<div id="fb-root"></div>
+
 {% if messages %}
   <div class="messages">
     <ul class="messages">
@@ -406,4 +408,10 @@
 <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 <!-- AdminLTE App -->
 <script src="{% static 'dist/js/adminlte.min.js' %}"></script>
-
+{# FB comments#}
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v11.0"
+        nonce="AJvIiMi0"></script>
+{# FB Like #}
+<script async defer crossorigin="anonymous"
+        src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v11.0"
+        nonce="kgfSh8gx"></script>
